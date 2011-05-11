@@ -3,6 +3,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -57,6 +59,17 @@ public class Vanilla extends JavaPlugin {
             }
         }
     }
+    private boolean hasPermission(CommandSender sender, String node){
+    	if (sender instanceof Player){
+    		if (Permissions == null){
+    			return ((Player)sender).isOp();
+    		}else {
+    			return Permissions.has((Player)sender, node);
+    		}
+    	}else {
+    		return true;
+    	}
+    }
     @Override
 	public void onEnable() {
     	PlayerListener playerListener = new PlayerListener(){
@@ -74,14 +87,19 @@ public class Vanilla extends JavaPlugin {
         	    	}
         	    	player.sendMessage(list.substring(0, list.length() - 2));
     			}else if (cmdName.equalsIgnoreCase("ver") || cmdName.equalsIgnoreCase("version")){
-    				if (hideVersionCommand){
-    					event.setCancelled(true);
-    				}
+    				if (hideVersionCommand) event.setCancelled(true);
     			}
     		}
     	};
     	setupPermissions();
-    	createFile("plugins/Vanilla/");
+    	readConfig();
+    	getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.Normal, this);
+        PluginDescriptionFile pdfFile = this.getDescription();
+        System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+	}
+    
+    private void readConfig(){
+    	createFile("plugVanilla.hideplugincommandins/Vanilla/");
     	createFile("plugins/Vanilla/config.yml");
     	Configuration config = new Configuration(new File("plugins/Vanilla/config.yml"));
     	config.load();
@@ -93,15 +111,24 @@ public class Vanilla extends JavaPlugin {
     	hideVersionCommand = config.getBoolean("Vanilla.hideversioncommand", false);
     	hidePluginCommand = config.getBoolean("Vanilla.hideplugincommand", false);
     	String[] split = config.getString("Vanilla.hiddenplugins", "").split(",");
+    	hiddenPlugins.clear();
     	for (int i = 0; i < split.length; i++){
     		hiddenPlugins.add(split[i].toLowerCase());
     	}
-    	getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.Normal, this);
-        PluginDescriptionFile pdfFile = this.getDescription();
-        System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
-	}
+    }
     
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
+    	if (args.length < 1){
+    		if (!hasPermission(sender, "Vanilla.version")) return true;
+    		sender.sendMessage(ChatColor.GREEN + "Vanilla version " + getDescription().getVersion());
+    		return true;
+    	}else {
+    		if (args[0].equalsIgnoreCase("reload")){
+        		if (!hasPermission(sender, "Vanilla.reload")) return true;
+        		readConfig();
+        		sender.sendMessage(ChatColor.GREEN + "Vanilla configuration has been reloaded");
+    		}
+    	}
     	return true;
     }
 }
