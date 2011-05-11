@@ -65,6 +65,7 @@ public class Vanilla extends JavaPlugin {
     			String cmdName = event.getMessage().split("\\s+")[0].substring(1);
     			if (cmdName.equalsIgnoreCase("plugins") || cmdName.equalsIgnoreCase("pl")){
     				event.setCancelled(true);
+    				if (hidePluginCommand) return;
         	    	Plugin[] plugins = getServer().getPluginManager().getPlugins();
         	    	String list = "Plugins: ";
         	    	for (int i = 0; i < plugins.length; i++){
@@ -72,6 +73,10 @@ public class Vanilla extends JavaPlugin {
         	    			list += "¤a" + plugins[i].getDescription().getName() + "¤f, ";
         	    	}
         	    	player.sendMessage(list.substring(0, list.length() - 2));
+    			}else if (cmdName.equalsIgnoreCase("ver") || cmdName.equalsIgnoreCase("version")){
+    				if (hideVersionCommand){
+    					event.setCancelled(true);
+    				}
     			}
     		}
     	};
@@ -85,6 +90,8 @@ public class Vanilla extends JavaPlugin {
     	writeDefaultNode("Vanilla.hideplugincommand", false, config);
     	writeDefaultNode("Vanilla.hideversioncommand", false, config);
     	config.save();
+    	hideVersionCommand = config.getBoolean("Vanilla.hideversioncommand", false);
+    	hidePluginCommand = config.getBoolean("Vanilla.hideplugincommand", false);
     	String[] split = config.getString("Vanilla.hiddenplugins", "").split(",");
     	for (int i = 0; i < split.length; i++){
     		hiddenPlugins.add(split[i].toLowerCase());

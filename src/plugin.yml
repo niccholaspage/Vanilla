@@ -1,10 +1,10 @@
-name: PluginList
+name: Vanilla
 
-main: com.niccholaspage.PluginList.PluginList
+main: com.niccholaspage.Vanilla.Vanilla
 
 version: 0.1
 
 commands:
-  pluginlist:
+  vanilla:
     usage: /<command>
     description: 
