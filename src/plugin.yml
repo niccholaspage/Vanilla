@@ -1,0 +1,10 @@
+name: PluginList
+
+main: com.niccholaspage.PluginList.PluginList
+
+version: 0.1
+
+commands:
+  pluginlist:
+    usage: /<command>
+    description: 
