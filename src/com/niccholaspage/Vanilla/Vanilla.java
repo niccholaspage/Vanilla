@@ -99,7 +99,7 @@ public class Vanilla extends JavaPlugin {
 	}
     
     private void readConfig(){
-    	createFile("plugVanilla.hideplugincommandins/Vanilla/");
+    	createFile("plugins/Vanilla/");
     	createFile("plugins/Vanilla/config.yml");
     	Configuration config = new Configuration(new File("plugins/Vanilla/config.yml"));
     	config.load();
