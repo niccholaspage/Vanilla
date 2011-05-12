@@ -126,7 +126,7 @@ public class Vanilla extends JavaPlugin {
     		if (args[0].equalsIgnoreCase("reload")){
         		if (!hasPermission(sender, "Vanilla.reload")) return true;
         		readConfig();
-        		sender.sendMessage(ChatColor.GREEN + "Vanilla configuration has been reloaded");
+        		sender.sendMessage(ChatColor.GREEN + "Vanilla configuration has been reloaded.");
     		}
     	}
     	return true;
