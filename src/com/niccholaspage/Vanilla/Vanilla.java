@@ -77,6 +77,7 @@ public class Vanilla extends JavaPlugin {
     			Player player = event.getPlayer();
     			String cmdName = event.getMessage().split("\\s+")[0].substring(1);
     			if (cmdName.equalsIgnoreCase("plugins") || cmdName.equalsIgnoreCase("pl")){
+    				if (Permissions.has(player, "Vanilla.def.plugins")) return;
     				event.setCancelled(true);
     				if (hidePluginCommand) return;
         	    	Plugin[] plugins = getServer().getPluginManager().getPlugins();
@@ -87,6 +88,7 @@ public class Vanilla extends JavaPlugin {
         	    	}
         	    	player.sendMessage(list.substring(0, list.length() - 2));
     			}else if (cmdName.equalsIgnoreCase("ver") || cmdName.equalsIgnoreCase("version")){
+    				if (Permissions.has(player, "Vanilla.def.version")) return;
     				if (hideVersionCommand) event.setCancelled(true);
     			}
     		}
