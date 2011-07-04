@@ -1,6 +1,5 @@
 package com.niccholaspage.Vanilla;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,25 +27,8 @@ public class Vanilla extends JavaPlugin {
 		System.out.println("Vanilla Disabled");
 		
 	}
-    private boolean createFile(String file){
-		File f = new File(file);
-		if (!f.exists()){
-			if (file.endsWith("/")){
-				f.mkdir();
-			}else {
-				try {
-					f.createNewFile();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			return true;
-		}else {
-			return false;
-		}
-    }
 	
-	private void writeDefaultNode(String node, Object value, Configuration config){
+	private void writeNode(String node, Object value, Configuration config){
 		if (config.getProperty(node) == null) config.setProperty(node, value);
 	}
     private void setupPermissions(){
@@ -75,21 +57,33 @@ public class Vanilla extends JavaPlugin {
     	PlayerListener playerListener = new PlayerListener(){
     		public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
     			Player player = event.getPlayer();
-    			String cmdName = event.getMessage().split("\\s+")[0].substring(1);
+    			String[] split = event.getMessage().split("\\s+");
+    			String cmdName = split[0].substring(1);
     			if (cmdName.equalsIgnoreCase("plugins") || cmdName.equalsIgnoreCase("pl")){
-    				if (Permissions.has(player, "Vanilla.def.plugins")) return;
+    				if (hasPermission(player, "Vanilla.def.plugins")) return;
     				event.setCancelled(true);
     				if (hidePluginCommand) return;
         	    	Plugin[] plugins = getServer().getPluginManager().getPlugins();
         	    	String list = "Plugins: ";
         	    	for (int i = 0; i < plugins.length; i++){
         	    		if (!hiddenPlugins.contains(plugins[i].getDescription().getName().toLowerCase()))
-        	    			list += "¤a" + plugins[i].getDescription().getName() + "¤f, ";
+        	    			list += plugins[i].isEnabled() ? ChatColor.GREEN : ChatColor.RED + plugins[i].getDescription().getName() + ChatColor.WHITE + ", ";
         	    	}
         	    	player.sendMessage(list.substring(0, list.length() - 2));
     			}else if (cmdName.equalsIgnoreCase("ver") || cmdName.equalsIgnoreCase("version")){
-    				if (Permissions.has(player, "Vanilla.def.version")) return;
-    				if (hideVersionCommand) event.setCancelled(true);
+    				if (hasPermission(player, "Vanilla.def.version")) return;
+    				if (hideVersionCommand){
+    					event.setCancelled(true);
+    					return;
+    				}
+    				if (split.length > 1){
+    					String pluginName = split[1].toLowerCase();
+    					if (hiddenPlugins.contains(pluginName)){
+    						player.sendMessage("This server is not running any plugin by that name.");
+    						player.sendMessage("Use /plugins to get a list of plugins.");
+    						event.setCancelled(true);
+    					}
+    				}
     			}
     		}
     	};
@@ -101,14 +95,15 @@ public class Vanilla extends JavaPlugin {
 	}
     
     private void readConfig(){
-    	createFile("plugins/Vanilla/");
-    	createFile("plugins/Vanilla/config.yml");
-    	Configuration config = new Configuration(new File("plugins/Vanilla/config.yml"));
+    	getDataFolder().mkdir();
+    	File file = new File(getDataFolder(), "config.yml");
+    	file.mkdir();
+    	Configuration config = new Configuration(file);
     	config.load();
-    	writeDefaultNode("Vanilla", "", config);
-    	writeDefaultNode("Vanilla.hiddenplugins", "", config);
-    	writeDefaultNode("Vanilla.hideplugincommand", false, config);
-    	writeDefaultNode("Vanilla.hideversioncommand", false, config);
+    	writeNode("Vanilla", "", config);
+    	writeNode("Vanilla.hiddenplugins", "", config);
+    	writeNode("Vanilla.hideplugincommand", false, config);
+    	writeNode("Vanilla.hideversioncommand", false, config);
     	config.save();
     	hideVersionCommand = config.getBoolean("Vanilla.hideversioncommand", false);
     	hidePluginCommand = config.getBoolean("Vanilla.hideplugincommand", false);
