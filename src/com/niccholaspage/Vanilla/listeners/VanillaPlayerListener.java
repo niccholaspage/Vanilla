@@ -42,12 +42,24 @@ public class VanillaPlayerListener implements Listener {
 
 		String cmdName = split[0].substring(1).toLowerCase();
 		
+		String[] realArgs;
+		
+		if (split.length < 2){
+			realArgs = new String[0];
+		}else {
+			realArgs = new String[split.length - 2];
+			
+			for (int i = 2; i < split.length; i++){
+				realArgs[i - 2] = split[i];
+			}
+		}
+		
 		if (!player.hasPermission("Vanilla.default.plugins") && pluginsCommandAliases.contains(cmdName)){
-			plugin.getPluginsCommand().onCommand(player, null, null, null);
+			plugin.getPluginsCommand().onCommand(player, null, null, realArgs);
 		}
 		
 		if (!player.hasPermission("Vanilla.default.version") && versionCommandAliases.contains(cmdName)){
-			plugin.getVersionCommand().onCommand(player, null, null, null);
+			plugin.getVersionCommand().onCommand(player, null, null, realArgs);
 		}
 	}
 }
