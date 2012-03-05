@@ -2,7 +2,7 @@ package com.niccholaspage.Vanilla;
 
 public enum Phrase {
 	VANILLA_COMMAND_CREDIT("Vanilla $1 by niccholaspage"),
-	VANILLA_CONFIG_RELOAD_HOW_TO("Type /$0 reload to reload the configuration"),
+	VANILLA_CONFIG_RELOAD_HOW_TO("Type /$1 reload to reload the configuration"),
 	VANILLA_CONFIG_RELOADED("The Vanilla configuration has been reloaded.");
 
 	private String defaultMessage;
