@@ -26,7 +26,7 @@ public class VanillaPlayerListener implements Listener {
 		pluginsCommandAliases = new HashSet<String>();
 		
 		pluginsCommandAliases.add("plugins");
-		pluginsCommandAliases.add("plugin");
+		pluginsCommandAliases.add("pl");
 		
 		versionCommandAliases = new HashSet<String>();
 		
