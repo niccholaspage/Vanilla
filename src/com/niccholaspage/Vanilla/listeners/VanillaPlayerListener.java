@@ -54,12 +54,18 @@ public class VanillaPlayerListener implements Listener {
 			}
 		}
 		
+		boolean handled = true;
+		
 		if (!player.hasPermission("Vanilla.default.plugins") && pluginsCommandAliases.contains(cmdName)){
 			plugin.getPluginsCommand().onCommand(player, null, null, realArgs);
+		}else if (!player.hasPermission("Vanilla.default.version") && versionCommandAliases.contains(cmdName)){
+			plugin.getVersionCommand().onCommand(player, null, null, realArgs);
+		}else {
+			handled = false;
 		}
 		
-		if (!player.hasPermission("Vanilla.default.version") && versionCommandAliases.contains(cmdName)){
-			plugin.getVersionCommand().onCommand(player, null, null, realArgs);
+		if (handled){
+			event.setCancelled(true);
 		}
 	}
 }
