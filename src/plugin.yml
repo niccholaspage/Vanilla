@@ -2,9 +2,9 @@ name: Vanilla
 
 main: com.niccholaspage.Vanilla.Vanilla
 
-version: 0.1
+version: 0.2-SNAPSHOT
 
 commands:
   vanilla:
     usage: /<command>
-    description: 
+    description: Allows you to view Vanilla version and reload the configuration
