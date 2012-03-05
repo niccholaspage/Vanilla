@@ -54,42 +54,9 @@ public class Vanilla extends JavaPlugin {
     }
     @Override
 	public void onEnable() {
-    	PlayerListener playerListener = new PlayerListener(){
-    		public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-    			Player player = event.getPlayer();
-    			String[] split = event.getMessage().split("\\s+");
-    			String cmdName = split[0].substring(1);
-    			if (cmdName.equalsIgnoreCase("plugins") || cmdName.equalsIgnoreCase("pl")){
-    				if (hasPermission(player, "Vanilla.def.plugins")) return;
-    				event.setCancelled(true);
-    				if (hidePluginCommand) return;
-        	    	Plugin[] plugins = getServer().getPluginManager().getPlugins();
-        	    	String list = "Plugins: ";
-        	    	for (int i = 0; i < plugins.length; i++){
-        	    		if (!hiddenPlugins.contains(plugins[i].getDescription().getName().toLowerCase()))
-        	    			list += plugins[i].isEnabled() ? ChatColor.GREEN : ChatColor.RED + plugins[i].getDescription().getName() + ChatColor.WHITE + ", ";
-        	    	}
-        	    	player.sendMessage(list.substring(0, list.length() - 2));
-    			}else if (cmdName.equalsIgnoreCase("ver") || cmdName.equalsIgnoreCase("version")){
-    				if (hasPermission(player, "Vanilla.def.version")) return;
-    				if (hideVersionCommand){
-    					event.setCancelled(true);
-    					return;
-    				}
-    				if (split.length > 1){
-    					String pluginName = split[1].toLowerCase();
-    					if (hiddenPlugins.contains(pluginName)){
-    						player.sendMessage("This server is not running any plugin by that name.");
-    						player.sendMessage("Use /plugins to get a list of plugins.");
-    						event.setCancelled(true);
-    					}
-    				}
-    			}
-    		}
-    	};
     	setupPermissions();
     	readConfig();
-    	getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.Normal, this);
+    	getServer().getPluginManager().registerEvent(this, this);
         PluginDescriptionFile pdfFile = this.getDescription();
         System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 	}
@@ -128,4 +95,37 @@ public class Vanilla extends JavaPlugin {
     	}
     	return true;
     }
+    
+    @EventHandler
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+    			Player player = event.getPlayer();
+    			String[] split = event.getMessage().split("\\s+");
+    			String cmdName = split[0].substring(1);
+    			if (cmdName.equalsIgnoreCase("plugins") || cmdName.equalsIgnoreCase("pl")){
+    				if (hasPermission(player, "Vanilla.def.plugins")) return;
+    				event.setCancelled(true);
+    				if (hidePluginCommand) return;
+        	    	Plugin[] plugins = getServer().getPluginManager().getPlugins();
+        	    	String list = "Plugins: ";
+        	    	for (int i = 0; i < plugins.length; i++){
+        	    		if (!hiddenPlugins.contains(plugins[i].getDescription().getName().toLowerCase()))
+        	    			list += plugins[i].isEnabled() ? ChatColor.GREEN : ChatColor.RED + plugins[i].getDescription().getName() + ChatColor.WHITE + ", ";
+        	    	}
+        	    	player.sendMessage(list.substring(0, list.length() - 2));
+    			}else if (cmdName.equalsIgnoreCase("ver") || cmdName.equalsIgnoreCase("version")){
+    				if (hasPermission(player, "Vanilla.def.version")) return;
+    				if (hideVersionCommand){
+    					event.setCancelled(true);
+    					return;
+    				}
+    				if (split.length > 1){
+    					String pluginName = split[1].toLowerCase();
+    					if (hiddenPlugins.contains(pluginName)){
+    						player.sendMessage("This server is not running any plugin by that name.");
+    						player.sendMessage("Use /plugins to get a list of plugins.");
+    						event.setCancelled(true);
+    					}
+    				}
+    			}
+    		}
 }
