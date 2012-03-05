@@ -65,6 +65,8 @@ public class ConfigHandler {
 		//Convert hideplugincommand boolean to hidepluginscommand
 		if (config.isBoolean("hideplugincommand")){
 			config.set("hidepluginscommand", config.getBoolean("hideplugincommand"));
+			
+			config.set("hideplugincommand", null);
 		}
 		
 		try {
