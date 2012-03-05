@@ -35,7 +35,7 @@ public class VersionCommand implements CommandExecutor {
 
 			Plugin plugin = Bukkit.getPluginManager().getPlugin(name.toString());
 			
-			if (plugin == null || vanillaPlugin.getConfigHandler().getHiddenPlugins().contains(plugin.getDescription().getName())){
+			if (plugin == null || vanillaPlugin.getConfigHandler().getHiddenPlugins().contains(plugin.getDescription().getName().toLowerCase())){
 				sender.sendMessage("This server is not running any plugin by that name.");
 				sender.sendMessage("Use /plugins to get a list of plugins.");
 			}else {

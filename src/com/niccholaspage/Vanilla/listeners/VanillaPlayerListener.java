@@ -45,14 +45,10 @@ public class VanillaPlayerListener implements Listener {
 		
 		String[] realArgs;
 		
-		if (split.length < 2){
-			realArgs = new String[0];
-		}else {
-			realArgs = new String[split.length - 2];
-			
-			for (int i = 2; i < split.length; i++){
-				realArgs[i - 2] = split[i];
-			}
+		realArgs = new String[split.length - 1];
+
+		for (int i = 1; i < split.length; i++){
+			realArgs[i - 1] = split[i];
 		}
 		
 		boolean handled = true;

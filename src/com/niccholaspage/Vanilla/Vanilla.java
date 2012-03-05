@@ -21,6 +21,8 @@ public class Vanilla extends JavaPlugin {
 	public void onEnable(){
 		new VanillaPlayerListener(this);
 		
+		getDataFolder().mkdirs();
+		
 		loadConfig();
 		
 		getCommand("vanilla").setExecutor(new VanillaCommand(this));
