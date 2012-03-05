@@ -8,12 +8,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.niccholaspage.Vanilla.commands.PluginsCommand;
 import com.niccholaspage.Vanilla.commands.VanillaCommand;
+import com.niccholaspage.Vanilla.commands.VersionCommand;
 import com.niccholaspage.Vanilla.listeners.VanillaPlayerListener;
 
 public class Vanilla extends JavaPlugin {
 	private ConfigHandler configHandler;
 	
 	private CommandExecutor pluginsCommand;
+	
+	private CommandExecutor versionCommand;
 	
 	public void onEnable(){
 		new VanillaPlayerListener(this);
@@ -23,6 +26,8 @@ public class Vanilla extends JavaPlugin {
 		getCommand("vanilla").setExecutor(new VanillaCommand(this));
 		
 		pluginsCommand = new PluginsCommand(this);
+		
+		versionCommand = new VersionCommand(this);
 	}
 	
 	public ConfigHandler getConfigHandler(){
@@ -31,6 +36,10 @@ public class Vanilla extends JavaPlugin {
 	
 	public CommandExecutor getPluginsCommand(){
 		return pluginsCommand;
+	}
+	
+	public CommandExecutor getVersionCommand(){
+		return versionCommand;
 	}
 	
 	public void loadConfig(){

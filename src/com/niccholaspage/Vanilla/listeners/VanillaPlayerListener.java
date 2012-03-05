@@ -14,6 +14,8 @@ public class VanillaPlayerListener implements Listener {
 	private final Vanilla plugin;
 	
 	private final Set<String> pluginsCommandAliases;
+	
+	private final Set<String> versionCommandAliases;
 
 	public VanillaPlayerListener(Vanilla plugin){
 		this.plugin = plugin;
@@ -21,6 +23,8 @@ public class VanillaPlayerListener implements Listener {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		
 		pluginsCommandAliases = new HashSet<String>();
+		
+		versionCommandAliases = new HashSet<String>();
 	}
 
 	@EventHandler()
@@ -33,6 +37,10 @@ public class VanillaPlayerListener implements Listener {
 		
 		if (!player.hasPermission("Vanilla.default.plugins") && pluginsCommandAliases.contains(cmdName)){
 			plugin.getPluginsCommand().onCommand(player, null, null, null);
+		}
+		
+		if (!player.hasPermission("Vanilla.default.version") && versionCommandAliases.contains(cmdName)){
+			plugin.getVersionCommand().onCommand(player, null, null, null);
 		}
 	}
 }
