@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import com.niccholaspage.Vanilla.ConfigHandler;
 import com.niccholaspage.Vanilla.Vanilla;
 
 public class VanillaPlayerListener implements Listener {
@@ -56,10 +57,16 @@ public class VanillaPlayerListener implements Listener {
 		
 		boolean handled = true;
 		
-		if (!player.hasPermission("Vanilla.default.plugins") && pluginsCommandAliases.contains(cmdName)){
-			plugin.getPluginsCommand().onCommand(player, null, null, realArgs);
-		}else if (!player.hasPermission("Vanilla.default.version") && versionCommandAliases.contains(cmdName)){
-			plugin.getVersionCommand().onCommand(player, null, null, realArgs);
+		ConfigHandler configHandler = plugin.getConfigHandler();
+		
+		if (pluginsCommandAliases.contains(cmdName) && !player.hasPermission("Vanilla.default.plugins")){
+			if (!configHandler.isHidingPluginsCommand()){
+				plugin.getPluginsCommand().onCommand(player, null, null, realArgs);
+			}
+		}else if (versionCommandAliases.contains(cmdName) && !player.hasPermission("Vanilla.default.version")){
+			if (!configHandler.isHidingVersionCommand()){
+				plugin.getVersionCommand().onCommand(player, null, null, realArgs);
+			}
 		}else {
 			handled = false;
 		}
