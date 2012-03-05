@@ -3,7 +3,6 @@ package com.niccholaspage.Vanilla;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -75,7 +74,11 @@ public class ConfigHandler {
 			e.printStackTrace();
 		}
 		
-		hiddenPlugins = new HashSet<String>(config.getStringList("hiddenplugins"));
+		List<String> hiddenPluginsList = config.getStringList("hiddenplugins");
+		
+		for (String hiddenPlugin : hiddenPluginsList){
+			hiddenPlugins.add(hiddenPlugin.toLowerCase());
+		}
 		
 		hidePluginsCommand = config.getBoolean("hidepluginscommand");
 		

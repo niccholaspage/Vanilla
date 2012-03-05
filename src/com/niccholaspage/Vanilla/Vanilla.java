@@ -3,23 +3,34 @@ package com.niccholaspage.Vanilla;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.niccholaspage.Vanilla.commands.PluginsCommand;
 import com.niccholaspage.Vanilla.commands.VanillaCommand;
+import com.niccholaspage.Vanilla.listeners.VanillaPlayerListener;
 
 public class Vanilla extends JavaPlugin {
 	private ConfigHandler configHandler;
 	
+	private CommandExecutor pluginsCommand;
+	
 	public void onEnable(){
-		//Listeners
+		new VanillaPlayerListener(this);
 		
 		loadConfig();
 		
 		getCommand("vanilla").setExecutor(new VanillaCommand(this));
+		
+		pluginsCommand = new PluginsCommand(this);
 	}
 	
 	public ConfigHandler getConfigHandler(){
 		return configHandler;
+	}
+	
+	public CommandExecutor getPluginsCommand(){
+		return pluginsCommand;
 	}
 	
 	public void loadConfig(){

@@ -14,3 +14,7 @@ permissions:
     description: Allows you to check Vanilla's version
   Vanilla.reload:
     description: Allows you to reload Vanilla's configuration
+  Vanilla.default.plugins:
+    description: Shows the default /plugins command
+  Vanilla.default.version:
+    description: Shows the default /version command
