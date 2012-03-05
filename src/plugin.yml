@@ -8,3 +8,9 @@ commands:
   vanilla:
     usage: /<command>
     description: Allows you to view Vanilla version and reload the configuration
+    
+permissions:
+  Vanilla.version:
+    description: Allows you to check Vanilla's version
+  Vanilla.reload:
+    description: Allows you to reload Vanilla's configuration

@@ -1,9 +1,9 @@
 package com.niccholaspage.Vanilla;
 
 public enum Phrase {
-	NCHAT_COMMAND_CREDIT("Vanilla $1 by niccholaspage"),
-	NCHAT_CONFIG_RELOAD_HOW_TO("Type /$0 reload to reload the configuration"),
-	NCHAT_CONFIG_RELOADED("The Vanilla configuration has been reloaded.");
+	VANILLA_COMMAND_CREDIT("Vanilla $1 by niccholaspage"),
+	VANILLA_CONFIG_RELOAD_HOW_TO("Type /$0 reload to reload the configuration"),
+	VANILLA_CONFIG_RELOADED("The Vanilla configuration has been reloaded.");
 
 	private String defaultMessage;
 	
