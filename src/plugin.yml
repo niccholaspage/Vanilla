@@ -2,7 +2,7 @@ name: Vanilla
 
 main: com.niccholaspage.Vanilla.Vanilla
 
-version: 0.2-SNAPSHOT
+version: 0.2
 
 commands:
   vanilla:
