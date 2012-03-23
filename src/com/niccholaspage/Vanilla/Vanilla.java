@@ -18,12 +18,20 @@ public class Vanilla extends JavaPlugin {
 	
 	private CommandExecutor versionCommand;
 	
+	private int buildVersion;
+	
 	public void onEnable(){
 		new VanillaPlayerListener(this);
 		
 		getDataFolder().mkdirs();
 		
 		loadConfig();
+		
+		try {
+			buildVersion = Integer.parseInt(getServer().getBukkitVersion());
+		}catch (NumberFormatException e){
+			buildVersion = -1;
+		}
 		
 		getCommand("vanilla").setExecutor(new VanillaCommand(this));
 		
@@ -34,6 +42,10 @@ public class Vanilla extends JavaPlugin {
 	
 	public ConfigHandler getConfigHandler(){
 		return configHandler;
+	}
+	
+	public int getBuildVersion(){
+		return buildVersion;
 	}
 	
 	public CommandExecutor getPluginsCommand(){

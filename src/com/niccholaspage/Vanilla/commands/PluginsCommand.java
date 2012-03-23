@@ -16,6 +16,12 @@ public class PluginsCommand implements CommandExecutor {
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
+		if (vanillaPlugin.getBuildVersion() == -1 || vanillaPlugin.getBuildVersion() > 1421){
+			sender.sendMessage("Plugins " + getPluginList());
+			
+			return true;
+		}
+		
 		sender.sendMessage("Plugins: " + getPluginList());
 
 		return true;
@@ -26,13 +32,15 @@ public class PluginsCommand implements CommandExecutor {
 
 		Plugin[] plugins = vanillaPlugin.getServer().getPluginManager().getPlugins();
 
+		int pluginCount = 0;
+
 		for (Plugin plugin : plugins){
 			String name = plugin.getDescription().getName();
-			
+
 			if (vanillaPlugin.getConfigHandler().getHiddenPlugins().contains(name.toLowerCase())){
 				continue;
 			}
-			
+
 			if (pluginList.length() > 0){
 				pluginList.append(ChatColor.WHITE);
 				pluginList.append(", ");
@@ -41,8 +49,14 @@ public class PluginsCommand implements CommandExecutor {
 			pluginList.append(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED);
 
 			pluginList.append(name);
+			
+			pluginCount++;
 		}
-
+		
+		if (vanillaPlugin.getBuildVersion() == -1 || vanillaPlugin.getBuildVersion() > 1421){
+			return "(" + pluginCount + "): " + pluginList.toString();
+		}
+		
 		return pluginList.toString();
 	}
 }
